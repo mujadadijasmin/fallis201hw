@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cute Snake Game</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #dbe9ff, #ffe9da);
+      color: #111;
+    }
+
+    .game-wrapper {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 24px;
+      padding: 22px 26px 26px;
+      box-shadow: 0 16px 40px rgba(120, 150, 190, 0.45);
+      border: 2px solid rgba(190, 210, 245, 0.9);
+      max-width: 640px;
+      width: 100%;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #133c7a;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.85rem;
+      margin-bottom: 14px;
+      opacity: 0.8;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .score-box {
+      background: linear-gradient(135deg, #e1f0ff, #fff4e6);
+      border-radius: 999px;
+      padding: 8px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(165, 195, 230, 0.8);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #133c7a;
+    }
+
+    .score-label {
+      opacity: 0.8;
+    }
+
+    .score-value {
+      font-size: 1.1rem;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .control-group label {
+      font-weight: 600;
+      color: #133c7a;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 160px;
+      height: 6px;
+      border-radius: 999px;
+      background: #e0ebff;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #ff9ca6;
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 0 2px rgba(255, 156, 166, 0.4);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #ff9ca6;
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 0 2px rgba(255, 156, 166, 0.4);
+    }
+
+    .canvas-wrapper {
+      margin-top: 10px;
+      position: relative;
+      border-radius: 20px;
+      padding: 10px;
+      background: linear-gradient(135deg, #e7f0ff, #fff3e6);
+      border: 1px solid rgba(180, 205, 240, 0.7);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+    }
+
+    canvas {
+      display: block;
+      background: #f7fbff;
+      border-radius: 16px;
+      border: 2px solid rgba(155, 185, 230, 0.9);
+    }
+
+    .legend {
+      margin-top: 8px;
+      font-size: 0.78rem;
+      text-align: center;
+      opacity: 0.75;
+    }
+
+    .legend span {
+      font-weight: 600;
+    }
+
+    /* Game over overlay */
+    .overlay {
+      position: absolute;
+      inset: 10px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+      border: 2px dashed rgba(200, 150, 200, 0.6);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9);
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .overlay.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .overlay-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+      color: #c04970;
+    }
+
+    .overlay-score {
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+    }
+
+    .overlay-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .btn-try {
+      background: linear-gradient(135deg, #ff9ca6, #ffb67b);
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(255, 142, 153, 0.5);
+    }
+
+    .btn-try:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(255, 142, 153, 0.6);
+    }
+
+    .btn-quit {
+      background: #f1f4ff;
+      color: #333f63;
+      border: 1px solid rgba(150, 170, 210, 0.7);
+    }
+
+    .btn-quit:hover {
+      background: #e4ebff;
+      transform: translateY(-1px);
+    }
+
+    .quit-message {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 10px;
+      opacity: 0.8;
+    }
+
+    @media (max-width: 700px) {
+      .game-wrapper {
+        padding: 18px 16px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="game-wrapper">
+    <h1 class="title">Cute Snake</h1>
+    <p class="subtitle">Use arrow keys or WASD • Eat the fruits • Don’t eat yourself 🐍</p>
+
+    <div class="top-bar">
+      <div class="score-box">
+        <span class="score-label">Score:</span>
+        <span id="score" class="score-value">0</span>
+      </div>
+      <div class="control-group">
+        <label for="speed">Speed:</label>
+        <input id="speed" type="range" min="1" max="10" value="5">
+        <span id="speed-label">5</span>
+      </div>
+    </div>
+
+    <div class="canvas-wrapper">
+      <!-- Bigger play area -->
+      <canvas id="game" width="520" height="520"></canvas>
+
+      <div id="overlay" class="overlay">
+        <div class="overlay-title">Game Over</div>
+        <div class="overlay-score">Final score: <span id="final-score">0</span></div>
+        <div class="overlay-buttons">
+          <button class="btn btn-try" id="btn-try-again">Try Again</button>
+          <button class="btn btn-quit" id="btn-quit">Quit</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="legend">
+      <span>Controls:</span> Arrow keys / WASD • Adjust speed slider anytime
+    </p>
+    <p id="quit-message" class="quit-message"></p>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+    const scoreEl = document.getElementById("score");
+    const speedSlider = document.getElementById("speed");
+    const speedLabel = document.getElementById("speed-label");
+    const overlay = document.getElementById("overlay");
+    const finalScoreEl = document.getElementById("final-score");
+    const btnTryAgain = document.getElementById("btn-try-again");
+    const btnQuit = document.getElementById("btn-quit");
+    const quitMessage = document.getElementById("quit-message");
+
+    const tileSize = 20;
+    const tilesX = canvas.width / tileSize;
+    const tilesY = canvas.height / tileSize;
+    const FOOD_COUNT = 3; // multiple fruits at once
+
+    const FRUITS = ["🍎", "🍊", "🍇", "🍓", "🍉", "🍌", "🍒", "🍍"];
+
+    let snake;
+    let direction;
+    let nextDirection;
+    let foods;
+    let score;
+    let isGameOver = false;
+    let isQuit = false;
+
+    // Smooth timing with requestAnimationFrame
+    let moveInterval = 160; // ms between moves (depends on speed slider)
+    let lastFrameTime = 0;
+    let animationFrameId = null;
+
+    function resetGame() {
+      snake = [
+        { x: 8, y: 10 },
+        { x: 7, y: 10 },
+        { x: 6, y: 10 }
+      ];
+      direction = { x: 1, y: 0 };
+      nextDirection = { x: 1, y: 0 };
+      score = 0;
+      scoreEl.textContent = score;
+      overlay.classList.remove("visible");
+      isGameOver = false;
+      isQuit = false;
+      quitMessage.textContent = "";
+      foods = [];
+      ensureFoodCount();
+      updateSpeed();
+      drawBoard();
+      drawFood();
+      drawSnake();
+      startLoop();
+    }
+
+    function updateSpeed() {
+      const speedValue = parseInt(speedSlider.value, 10);
+      speedLabel.textContent = speedValue;
+
+      // map slider (1-10) to interval (slow ~260ms, fast ~90ms)
+      const maxSpeedMs = 260;
+      const minSpeedMs = 90;
+      const step = (maxSpeedMs - minSpeedMs) / 9;
+      moveInterval = maxSpeedMs - (speedValue - 1) * step;
+    }
+
+    function startLoop() {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+      lastFrameTime = 0;
+      animationFrameId = requestAnimationFrame(gameLoop);
+    }
+
+    function ensureFoodCount() {
+      while (foods.length < FOOD_COUNT) {
+        placeFood();
+      }
+    }
+
+    function placeFood() {
+      let newFood;
+      while (true) {
+        newFood = {
+          x: Math.floor(Math.random() * tilesX),
+          y: Math.floor(Math.random() * tilesY),
+          emoji: FRUITS[Math.floor(Math.random() * FRUITS.length)]
+        };
+        const onSnake = snake.some(seg => seg.x === newFood.x && seg.y === newFood.y);
+        const onOtherFood = foods.some(f => f.x === newFood.x && f.y === newFood.y);
+        if (!onSnake && !onOtherFood) break;
+      }
+      foods.push(newFood);
+    }
+
+    function drawBoard() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let x = 0; x < tilesX; x++) {
+        for (let y = 0; y < tilesY; y++) {
+          const isLight = (x + y) % 2 === 0;
+          ctx.fillStyle = isLight ? "#f7fbff" : "#edf3ff";
+          ctx.fillRect(x * tileSize, y * tileSize, tileSize, tileSize);
+        }
+      }
+    }
+
+    function drawSnake() {
+      snake.forEach((seg, index) => {
+        const baseColor = index === 0 ? "#ff8aa0" : "#7bc6ff";
+        const borderColor = index === 0 ? "#c7486c" : "#3576a3";
+
+        ctx.fillStyle = baseColor;
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = 2;
+
+        const px = seg.x * tileSize;
+        const py = seg.y * tileSize;
+        const r = tileSize / 2;
+
+        ctx.beginPath();
+        if (ctx.roundRect) {
+          ctx.roundRect(px + 2, py + 2, tileSize - 4, tileSize - 4, r * 0.6);
+        } else {
+          ctx.rect(px + 2, py + 2, tileSize - 4, tileSize - 4);
+        }
+        ctx.fill();
+        ctx.stroke();
+
+        if (index === 0) {
+          // little face
+          ctx.fillStyle = "#ffffff";
+          const eyeSize = 3;
+          ctx.beginPath();
+          ctx.arc(px + tileSize * 0.35, py + tileSize * 0.35, eyeSize, 0, Math.PI * 2);
+          ctx.arc(px + tileSize * 0.65, py + tileSize * 0.35, eyeSize, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = "#333333";
+          const pupilSize = 1.5;
+          ctx.beginPath();
+          ctx.arc(px + tileSize * 0.35, py + tileSize * 0.35, pupilSize, 0, Math.PI * 2);
+          ctx.arc(px + tileSize * 0.65, py + tileSize * 0.35, pupilSize, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+    }
+
+    function drawFood() {
+      foods.forEach(food => {
+        const px = food.x * tileSize;
+        const py = food.y * tileSize;
+
+        // subtle highlight behind fruit
+        ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+        ctx.beginPath();
+        ctx.arc(px + tileSize / 2, py + tileSize / 2, tileSize / 2.4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // draw fruit emoji
+        ctx.font = tileSize + "px system-ui";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(food.emoji, px + tileSize / 2, py + tileSize / 2 + 1);
+      });
+    }
+
+    function setDirection(dx, dy) {
+      const isOpposite = (dx === -direction.x && dy === -direction.y);
+      if (snake.length > 1 && isOpposite) return;
+      nextDirection = { x: dx, y: dy };
+    }
+
+    function stepGame() {
+      if (isGameOver || isQuit) return;
+
+      direction = nextDirection;
+
+      const head = snake[0];
+      const newHead = {
+        x: head.x + direction.x,
+        y: head.y + direction.y
+      };
+
+      // wall collision
+      if (
+        newHead.x < 0 ||
+        newHead.x >= tilesX ||
+        newHead.y < 0 ||
+        newHead.y >= tilesY
+      ) {
+        endGame();
+        return;
+      }
+
+      // self collision
+      if (snake.some(seg => seg.x === newHead.x && seg.y === newHead.y)) {
+        endGame();
+        return;
+      }
+
+      snake.unshift(newHead);
+
+      // check if any fruit eaten
+      const eatenIndex = foods.findIndex(f => f.x === newHead.x && f.y === newHead.y);
+      if (eatenIndex !== -1) {
+        score += 10;
+        scoreEl.textContent = score;
+        foods.splice(eatenIndex, 1);
+        ensureFoodCount(); // keep multiple fruits on board
+        // (snake grows automatically by not popping tail this turn)
+      } else {
+        // move tail when not eating (so only eats = growth)
+        snake.pop();
+      }
+    }
+
+    function gameLoop(timestamp) {
+      if (isGameOver || isQuit) return;
+
+      if (!lastFrameTime) {
+        lastFrameTime = timestamp;
+      }
+
+      const delta = timestamp - lastFrameTime;
+      if (delta >= moveInterval) {
+        lastFrameTime = timestamp;
+        stepGame();
+        drawBoard();
+        drawFood();
+        drawSnake();
+      }
+
+      animationFrameId = requestAnimationFrame(gameLoop);
+    }
+
+    function endGame() {
+      isGameOver = true;
+      finalScoreEl.textContent = score;
+      overlay.classList.add("visible");
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (isGameOver || isQuit) return;
+
+      switch (e.key) {
+        case "ArrowUp":
+        case "w":
+        case "W":
+          setDirection(0, -1);
+          break;
+        case "ArrowDown":
+        case "s":
+        case "S":
+          setDirection(0, 1);
+          break;
+        case "ArrowLeft":
+        case "a":
+        case "A":
+          setDirection(-1, 0);
+          break;
+        case "ArrowRight":
+        case "d":
+        case "D":
+          setDirection(1, 0);
+          break;
+      }
+    });
+
+    speedSlider.addEventListener("input", () => {
+      updateSpeed();
+    });
+
+    btnTryAgain.addEventListener("click", () => {
+      resetGame();
+    });
+
+    btnQuit.addEventListener("click", () => {
+      overlay.classList.remove("visible");
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      isQuit = true;
+      quitMessage.textContent = "You quit the game. Thanks for playing! 💙";
+    });
+
+    // Initial setup
+    resetGame();
+  </script>
+</body>
+</html>

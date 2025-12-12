@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>How to Survive Winter in Boston</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #d7eaff 0%, #fff4e6 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 50px 20px;
+      color: #000;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Bold cute doodle wallpaper */
+    body::before {
+      content: "❄️ ⛄ ❄️ ⛄ ❄️ ⛄ ❄️ ⛄ ❄️ ⛄ ❄️ ⛄";
+      position: fixed;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2.2rem;
+      opacity: 0.42;
+      pointer-events: none;
+      letter-spacing: 16px;
+      color: #88b5ff;
+      text-shadow: 0px 0px 8px rgba(255,255,255,0.95);
+    }
+
+    body::after {
+      content: "❄️ ⛄ ❄️ ⛄ ❄️ ⛄ ❄️ ⛄ ❄️ ⛄ ❄️ ⛄";
+      position: fixed;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2.2rem;
+      opacity: 0.38;
+      pointer-events: none;
+      letter-spacing: 16px;
+      color: #88b5ff;
+      text-shadow: 0px 0px 8px rgba(255,255,255,0.95);
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 30px;
+      padding: 50px 40px;
+      box-shadow: 0 15px 45px rgba(130, 160, 200, 0.35);
+      border: 3px solid rgba(180, 210, 255, 0.6);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.4rem;
+      margin-bottom: 12px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #003d76;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 1.05rem;
+      margin-bottom: 32px;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+
+    .section {
+      margin-bottom: 32px;
+      background: linear-gradient(135deg, #e4f0ff, #fff5e6);
+      border-radius: 24px;
+      padding: 26px;
+      border: 2px solid rgba(165, 195, 230, 0.7);
+      box-shadow: 0 8px 18px rgba(160,185,215,0.25);
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      margin-bottom: 14px;
+      font-weight: 800;
+      color: #003d76;
+    }
+
+    ul {
+      margin-left: 24px;
+      list-style: disc;
+    }
+
+    li {
+      margin-bottom: 10px;
+      line-height: 1.5;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    a {
+      color: #0061a8;
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 2px dotted rgba(0, 97, 168, 0.45);
+      transition: 0.25s ease;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #003d6b;
+    }
+
+    .footer-links {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #003d76;
+    }
+
+    .footer-links a {
+      margin: 0 8px;
+    }
+
+    @media(max-width: 600px) {
+      .container {
+        padding: 35px 22px;
+      }
+
+      body::before,
+      body::after {
+        font-size: 1.7rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      li {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>How to Survive Winter in Boston</h1>
+    <p class="subtitle">Pastel skies, snowflakes, and freezing sidewalks.</p>
+
+    <div class="section">
+      <div class="section-title"><strong>1. Dress for Real Boston Weather</strong></div>
+      <ul>
+        <li>Get a down coat that blocks wind coming off the harbor.</li>
+        <li>Layer: base + fleece or wool + coat.</li>
+        <li>Waterproof boots = warm feet, less sadness.</li>
+        <li>Always keep hat, scarf, and mittens in your bag.</li>
+        <li>Thermal socks > thin cotton socks.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><strong>2. Make Your Apartment Cozy</strong></div>
+      <ul>
+        <li>Insulate drafty windows with plastic kits.</li>
+        <li>Soft rugs = warmer floors.</li>
+        <li>Cute blankets and hot tea fix almost anything.</li>
+        <li>Close curtains at night to keep heat in.</li>
+        <li>Know who to call if your heat stops working.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><strong>3. Walk Like a Local</strong></div>
+      <ul>
+        <li>Check the weather + <a href="https://en.wikipedia.org/wiki/MBTA" target="_blank">MBTA</a> before leaving.</li>
+        <li>On ice: smaller steps, no rushing.</li>
+        <li>Carry dry socks on slushy days.</li>
+        <li>Extra commute time is normal during storms.</li>
+        <li>A coat with a hood saves your hair on surprise snow days.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><strong>4. Take Care of Your Body</strong></div>
+      <ul>
+        <li>Heated air dries your skin → drink water.</li>
+        <li>Lip balm + moisturizer = winter essentials.</li>
+        <li>Warm food helps (soup, ramen, oatmeal).</li>
+        <li>Get some daylight each day.</li>
+        <li>Vitamin D might help — talk to a doctor first.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><strong>5. Protect Your Mood</strong></div>
+      <ul>
+        <li>Plan tiny weekly joys: coffee, movies, walks.</li>
+        <li>Call your family, text your friends.</li>
+        <li>Create a cozy corner for reading or shows.</li>
+        <li>Stretch or do light exercise inside.</li>
+        <li>Talk to a counselor if winter feels heavy.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><strong>6. Know When It’s Serious</strong></div>
+      <ul>
+        <li>Learn signs of <a href="https://en.wikipedia.org/wiki/Hypothermia" target="_blank">hypothermia</a> and <a href="https://en.wikipedia.org/wiki/Frostbite" target="_blank">frostbite</a>.</li>
+        <li>Check wind chill — “feels like” matters.</li>
+        <li>Read about Boston’s <a href="https://en.wikipedia.org/wiki/Climate_of_Boston" target="_blank">winter climate</a>.</li>
+        <li>If you drive: keep a small emergency kit.</li>
+        <li>Spring feels magical when you survive a Boston winter.</li>
+      </ul>
+    </div>
+
+    <div class="footer-links">
+      <a href="https://en.wikipedia.org/wiki/Boston" target="_blank">Boston</a> •
+      <a href="https://en.wikipedia.org/wiki/Winter" target="_blank">Winter</a> •
+      <a href="https://en.wikipedia.org/wiki/Seasonal_affective_disorder" target="_blank">SAD</a>
+    </div>
+  </div>
+</body>
+</html>
+
+
+
